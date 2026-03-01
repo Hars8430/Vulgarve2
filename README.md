@@ -1,2 +1,2 @@
-# Vulgarve2
+# VulgarVeto
 VulgarVeto : Helps Reducing Toxicity 
