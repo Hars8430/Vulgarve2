@@ -1,5 +1,5 @@
 import streamlit as st
-import speech_recognition as sr
+import whisper
 from gtts import gTTS
 from pydub import AudioSegment
 from tempfile import NamedTemporaryFile
@@ -11,15 +11,9 @@ import time
 # ── Audio processing ──────────────────────────────────────────────────────────
 
 def transcribe_chunk(audio_chunk_path):
-    recognizer = sr.Recognizer()
-    with sr.AudioFile(audio_chunk_path) as source:
-        audio_data = recognizer.record(source)
-    try:
-        return recognizer.recognize_google(audio_data)
-    except sr.UnknownValueError:
-        return "Could not understand audio"
-    except sr.RequestError as e:
-        return f"Could not request results; {e}"
+    model = whisper.load_model("tiny")
+    result = model.transcribe(audio_chunk_path)
+    return result["text"]
 
 
 def split_audio(audio_file, chunk_duration_ms):
